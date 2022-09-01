@@ -1,4 +1,4 @@
-# bookapp
+# BookApp
 
 ## Build Setup
 
