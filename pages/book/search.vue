@@ -22,6 +22,7 @@
         >一覧に戻る</v-btn>
       </v-col>
     </v-row>
+    <div v-show="!isFound" class="mt-4">検索結果は0件でした。</div>
   </div>
 </template>
 
@@ -30,7 +31,8 @@ export default {
   data() {
     return {
       keyword: '',
-      searchResult: []
+      searchResult: [],
+      isFound: true
     }
   },
   methods: {
@@ -46,18 +48,24 @@ export default {
 
       const response = await fetch(baseUrl + queryParams)
         .then(response => response.json())
-      console.log(response)  //eslint-disable-line
+      console.log(response.items)  //eslint-disable-line
 
-      for (const book of response.items) {
-        const title = book.volumeInfo.title
-        const img = book.volumeInfo.imageLinks
-        const description = book.volumeInfo.description
-        this.searchResult.push({
-          title: title ? title : '', //eslint-disable-line
-          image: img ? img.thumbnail : '',
-          description: description ? description.slice(0, 40) : ''
-        })
+      if(response.items === undefined) {
+        this.isFound = false
+      } else {
+        this.isFound = true
+        for (const book of response.items) {
+          const title = book.volumeInfo.title
+          const img = book.volumeInfo.imageLinks
+          const description = book.volumeInfo.description
+          this.searchResult.push({
+            title: title ? title : '', //eslint-disable-line
+            image: img ? img.thumbnail : '',
+            description: description ? description.slice(0, 40) : ''
+          })
+        }
       }
+
     }
   }
 }
