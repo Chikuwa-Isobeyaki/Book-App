@@ -1,11 +1,26 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="6"></v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="keyword"
+          label="本のタイトルを検索"
+        />
+      </v-col>
     </v-row>
     <v-row>
-      <v-col></v-col>
-      <v-col></v-col>
+      <v-col cols="3">
+        <v-btn
+          color="primary"
+          @click="search(keyword)"
+        >検索する</v-btn>
+      </v-col>
+      <v-col cols="3">
+        <v-btn
+          color="secondly"
+          to="/book"
+        >一覧に戻る</v-btn>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -19,7 +34,6 @@ export default {
     }
   },
   methods: {
-    //クエリーストロングを作成
     async search(keyword) {
       this.searchResult = []
       const baseUrl = 'https://www.googleapis.com/books/v1/volumes?'
@@ -28,18 +42,18 @@ export default {
         maxResults: 40
       }
       const queryParams = new URLSearchParams(params)
-      console.log(baseUrl + queryParams)
-      //fetchでjsonを取得
+      console.log(baseUrl + queryParams)  //eslint-disable-line
+
       const response = await fetch(baseUrl + queryParams)
         .then(response => response.json())
-      console.log(response)
-      //必要な情報を配列(searchResult)にpush
-      for (let book of response.items) {
-        let title = book.volumeInfo.title
-        let img = book.volumeInfo.imageLinks
-        let description = book.volumeInfo.description
+      console.log(response)  //eslint-disable-line
+
+      for (const book of response.items) {
+        const title = book.volumeInfo.title
+        const img = book.volumeInfo.imageLinks
+        const description = book.volumeInfo.description
         this.searchResult.push({
-          title: title ? title : '',
+          title: title ? title : '', //eslint-disable-line
           image: img ? img.thumbnail : '',
           description: description ? description.slice(0, 40) : ''
         })
