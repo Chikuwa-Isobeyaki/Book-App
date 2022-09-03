@@ -16,12 +16,12 @@ export default {
       newBook: null
     }
   },
-  mounted() {
+  created() {
     if (localStorage.getItem(STORAGE_KEY)) {
       try {
         this.books = JSON.parse(localStorage.getItem(STORAGE_KEY));
       } catch (e) {
-        localStorage.removeItem(STORAGE_KEY);
+        // localStorage.removeItem(STORAGE_KEY);
       }
     }
   },
@@ -51,7 +51,7 @@ export default {
       localStorage.setItem(STORAGE_KEY, parsed);
     },
     goToEditPage(id) {
-      this.$router.push(`/edit/${id}`)
+      this.$router.push(`/book/edit/${id}`)
     }
   }
 }
