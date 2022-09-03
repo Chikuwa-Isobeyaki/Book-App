@@ -1,6 +1,7 @@
 <template>
   <div>
     <NuxtChild 
+    :books="books"
     @add-book-list="addBook"
     />
   </div>
@@ -35,6 +36,11 @@ export default {
         memo: ''
       });
       this.saveBooks();
+
+      // (-1)[0]とすることにより配列の後ろから0番目を取得となる
+      // console.log(this.books.slice(-1)[0].id)
+
+      this.goToEditPage(this.books.slice(-1)[0].id)
     },
     removeBook(x) {
       this.books.splice(x, 1);
@@ -43,6 +49,9 @@ export default {
     saveBooks() {
       const parsed = JSON.stringify(this.books);
       localStorage.setItem(STORAGE_KEY, parsed);
+    },
+    goToEditPage(id) {
+      this.$router.push(`/edit/${id}`)
     }
   }
 }
